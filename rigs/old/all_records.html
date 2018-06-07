@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>scraper</title>
+
+    <!-- Bootstrap CSS File  -->
+    <link rel="stylesheet" type="text/css" href="bootstrap-3.3.5-dist/css/bootstrap.css"/>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script>
+(function($)
+{
+    $(document).ready(function()
+    {
+        $.ajaxSetup(
+        {
+            cache: false,
+            beforeSend: function() {
+                $('#content').hide();
+                $('#loading').show();
+            },
+            complete: function() {
+                $('#loading').hide();
+                $('#content').show();
+            },
+            success: function() {
+                $('#loading').hide();
+                $('#content').show();
+            }
+        });
+        var $container = $("#content");
+        $container.load("ajax/readAllRecords.php");
+        var refreshId = setInterval(function()
+        {
+            $container.load('ajax/readAllMatchedRecords.php');
+        }, 90000);
+    });
+})(jQuery);
+</script>
+</head>
+<body>
+
+<!-- Content Section -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>scraper</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <a href=index.html class="btn btn-info" role="button" >toggle alert records</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Records:</h3>
+                <div id="content"></div>
+                <img src="loading.gif" id="loading" alt="loading" style="display:none;" />
+        </div>
+    </div>
+</div>
+<!-- /Content Section -->
+
+
+
+<!-- Jquery JS file -->
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+
+<!-- Bootstrap JS file -->
+<script type="text/javascript" src="bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+
+<!-- Custom JS file -->
+<script type="text/javascript" src="js/script.js"></script>
+
+</body>
+</html>
