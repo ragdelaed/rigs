@@ -6,6 +6,8 @@ use POSIX qw(strftime);
 use DateTime;
 use Time::HiRes;
 use POSIX;
+use Time::Piece;
+use Time::Seconds qw/ ONE_DAY /;
 
 
 my $database="rigs";
@@ -44,9 +46,10 @@ sub query {
     my $host=shift(@_);
     my $sth = $dbh->prepare("
 select 
+    check_in_time,
     rack_loc,
     timestamp,
-    uptime,
+    human_uptime,
     status,
     ip,
     overheatedgpu as OHGPU,
@@ -66,20 +69,46 @@ limit 1
 
     $sth->execute($host) or die "execution failed: $dbh->errstr()";
     while (my $ref = $sth->fetchrow_hashref()) {
+        my $OHGPU = $ref->{'OHGPU'};;
+        my $THR = $ref->{'THR'};
+        if ($OHGPU != 1)
+        {
+            $OHGPU = 0;
+        } else
+        {
+            $OHGPU = 1;
+        }
+
+        if ($THR != 1)
+        {
+            $THR = 0;
+        } else
+        {
+            $THR = 1;
+        }
         my $epoc = time();
-        my $timedifference=ceil($epoc - $ref->{'timestamp'}*0.001);
-        #print "epoc ".$epoc.", timestamp ".$ref->{'timestamp'}.", timedifference ".$timedifference."\n";
+        my $timedifference=$epoc - $ref->{'check_in_time'};
+        
+        my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime($timedifference);
+
+        my $last_check_in_time= "$yday days $hour hours $min minutes $sec seconds";
+
+
+        #print "epoc ".$epoc.", timestamp ".$ref->{'check_in_time'}.", timedifference ".$timedifference."\n";
 
         
         if ("$timedifference" > 800) {
-            email ($ref->{'rack_loc'}, "down for ". ceil($timedifference/3600)." hours");
-            print $ref->{'rack_loc'}, "down for ". ceil($timedifference/3600)." hours\n";
+            #email ($ref->{'rack_loc'}, "down for ". ceil($timedifference/3600)." hours");
+            #print $ref->{'rack_loc'}, "down for ". ceil($timedifference/3600)." hours\n";
         }
 
-        print "$ref->{'rack_loc'},$ref->{'ip'},$ref->{'OHGPU'},$ref->{'THR'},$ref->{'status'},$ref->{'Timestamp'},$ref->{'LastBoot'},$timedifference\n";
+        print "$ref->{'rack_loc'},$ref->{'ip'},$OHGPU,$THR,$ref->{'status'},$ref->{'human_uptime'},$last_check_in_time\n";
     }
     $sth->finish;
 }
+
+
+print "rack_loc,ip,OHGPU,THR,status,human_uptime,last_check_in_time\n";
 
 my @host_array = ("eld01", "eld02", "eld03", "eld04","eld05","jld01","jld02","tmd01","tmd02","tmd03","r1_10","r1_11","r1_12","r1_13","r1_14","r1_15","r1_16","r1_17","r1_18","r1_19");
 foreach my $host (@host_array)

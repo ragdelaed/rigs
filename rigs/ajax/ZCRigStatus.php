@@ -14,10 +14,10 @@
 
         if (preg_match("/active/i", $status))
         {
-            $class="rigs-bg-stable";
+            $class="rigs-fg-stable";
         } else
         {
-            $class="rigs-bg-down";
+            $class="rigs-fg-down";
         }
 
         $data .= '              <div class='.$class.'>'.$rack_loc.' - '.$status.'</div>';

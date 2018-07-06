@@ -1,0 +1,29 @@
+
+a { color: inherit; }
+.rigs-bg-unstable {
+    border: 1px solid;
+    border-style:solid
+    border-width: 5px;
+    background-color: orange;
+    color:white;
+}
+.rigs-bg-stable {
+    border: 1px solid;
+    border-style:solid
+    border-width: 5px;
+    background-color: green;
+    color:white;
+}
+.rigs-bg-down {
+    border: 1px solid;
+    border-style:solid
+    border-width: 5px;
+    background-color: red;
+    color:white;
+}
+.rigs-fg-stable {
+    color: green;
+}
+.rigs-fg-down {
+    color: red;
+}

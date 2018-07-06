@@ -14,6 +14,8 @@ CREATE TABLE `rigs` (
   `kernel` varchar(64) ,
   `boot_mode` varchar(64) ,
   `uptime` int(11) ,
+  `check_in_time` int(13) ,
+  `human_uptime` varchar(64) ,
   `mac` varchar(64) ,
   `hostname` varchar(64) ,
   `rack_loc` varchar(64) ,

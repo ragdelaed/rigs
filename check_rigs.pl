@@ -53,6 +53,7 @@ select
     throttled as THR,
     memstates,
     temp,
+    check_in_time,
     FROM_UNIXTIME(timestamp/1000,'%Y-%M-%d %H:%i:%s') as Timestamp,
     FROM_UNIXTIME(unix_timestamp(now()) - uptime,'%Y-%M-%d %H:%i:%s') as LastBoot
 from 
@@ -67,7 +68,7 @@ limit 1
     $sth->execute($host) or die "execution failed: $dbh->errstr()";
     while (my $ref = $sth->fetchrow_hashref()) {
         my $epoc = time();
-        my $timedifference=ceil($epoc - $ref->{'timestamp'}*0.001);
+        my $timedifference=ceil($epoc - $ref->{'check_in_time'});
         #print "epoc ".$epoc.", timestamp ".$ref->{'timestamp'}.", timedifference ".$timedifference."\n";
 
         
