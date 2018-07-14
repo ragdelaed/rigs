@@ -36,12 +36,12 @@ foreach ($rig_array as $rig)
             #print "$rig,$epoc,$check_in_time,$timedifference\n";
 
 
-            if ($timedifference<3600)
+            if ($timedifference<800)
             {
                 $class="rigs-bg-stable";
             } else
             {
-                $class="rigs-bg-unstable";
+                $class="rigs-bg-down";
             }
 
             $data .= '              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 '.$class.'"><a href=status.php?rig='.$rig.'>'.$rig.' - '.$last_check_in_time.'</a></div>

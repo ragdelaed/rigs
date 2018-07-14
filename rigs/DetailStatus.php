@@ -64,12 +64,13 @@ foreach ($rig_details_array as $rig)
           $timedifference=$epoc - $check_in_time;
           $dt = new DateTime("@$timedifference");
           $last_check_in_time= $dt->format('H:i:s');
-          #print "$rig,$epoc,$check_in_time,$timedifference\n";
+          print "$rig,$epoc,$check_in_time,$timedifference\n";
 
           $total_hash=$total_hash+$hash;
           if ($overheat = 1){$overheat_class="rigs-fg-stable";} else {$overheat_class="rigs-fg-down";};
           if ($throttled = 1){$throttled_class="rigs-fg-stable";} else {$throttled_class="rigs-fg-down";};
           if ($uptime > 5){$uptime_class="rigs-fg-stable";} else {$uptime_class="rigs-fg-down";};
+          if ($timedifference < 350){$last_check_in_time_class="rigs-fg-stable";} else {$last_check_in_time_class="rigs-fg-down";};
           if ($hash > 100){$hash_class="rigs-fg-stable";} else {$hash_class="rigs-bg-down";};
           if ($cpu_temp < 70){$cpu_temp_class="rigs-fg-stable";} else {$cpu_temp_class="rigs-bg-down";};
           if (preg_match("/active/i", $status)){$status_class="rigs-fg-stable";} else {$status_class="rigs-bg-down";};
@@ -85,7 +86,7 @@ foreach ($rig_details_array as $rig)
                   echo "                  <td align='left'><div class=".$hash_class.">".$hash."</div></td>\n";
                   echo "                  <td align='left'>".$temp."</td>\n";
                   echo "                  <td align='left'><div class=".$uptime_class.">".$human_uptime."</div></td>\n";
-                  echo "                  <td align='left'>".$last_check_in_time."</td>\n";
+                  echo "                  <td align='left'><div class=".$last_check_in_time_class.">".$last_check_in_time."</div></td>\n";
                   echo "                </tr>\n";
 }
 ?>
